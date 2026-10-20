@@ -1,6 +1,6 @@
 # ExamStudio
 
-A course-grounded practice site with 15 exercises, two five-task mock exams, draft saving, a reflection step, reference approaches, downloadable source data and exports. No packages or API keys required.
+A course-grounded practice site with 15 exercises, two five-task mock exams, draft saving, a reflection step, reference approaches, downloadable source data and exports. Seven SQL exercises now run and check queries against the supplied Chinook database directly in the browser, including on GitHub Pages. No API key or server installation is required.
 
 ## Run locally (full version)
 
@@ -8,7 +8,7 @@ A course-grounded practice site with 15 exercises, two five-task mock exams, dra
 2. Run `python server.py`.
 3. Open http://127.0.0.1:8000 in your browser.
 
-The website directs students to download Chinook and run SQL in their own SQLite tool. The optional local SQL API uses the supplied Chinook database in read-only mode, rejects database changes and attachments, limits results and interrupts long queries. This is a local teaching server bound to your computer, not a production public backend.
+The website lets students run and check SQL directly in their browser, or download Chinook and use their own SQLite tool. The optional local SQL API uses the supplied Chinook database in read-only mode, rejects database changes and attachments, limits results and interrupts long queries. This is a local teaching server bound to your computer, not a production public backend.
 
 ## Upload to GitHub Pages (static version)
 
@@ -16,7 +16,7 @@ Run `python tools/build_static.py`. The `dist` folder and `ExamStudio-upload.zip
 
 Create a GitHub repository, upload the **contents** of `dist` to its root, then enable GitHub Pages from the main branch, root folder in repository Settings → Pages. The eventual address depends on your GitHub account and repository name. The ZIP can also be extracted and uploaded to static hosting.
 
-Static hosting supports practice, mock exams, saving, exports and downloads. Students download Chinook and use their own SQL tool. The optional SQL API in `server.py` is not exposed as a website button. No Gemini key belongs in browser code or a GitHub repository.
+Static hosting supports practice, mock exams, saving, exports, downloads and the browser SQL checker. The optional SQL API in `server.py` is not used by the website. No Gemini key belongs in browser code or a GitHub repository.
 
 ## Content and limitations
 
@@ -28,13 +28,19 @@ Drafts persist in local browser storage. Mock exam timing persists within the cu
 
 ## Validate and edit
 
-Run `python -m unittest -v` and `node --check site/app.js`.
+Run `python -m unittest -v`, `node tests/sql-checker.test.cjs` and `node --check site/app.js`.
 
 Edit `tools/build_content.py`, regenerate with `python tools/build_content.py`, then rebuild the upload package and copy the contents of `dist` to the repository root for GitHub Pages. Source provenance and file references are recorded per question in `site/questions.json`.
 
 ## Assignment explanation: added functionality
 
-The “Defend your result” step requires the student to record a method, a verification and a limitation before marking a self-review complete. For example, an IntegrateCo answer must explain how employee keys, data aggregation levels and wage definitions were aligned, while an audit answer must distinguish a flagged purchase from evidence of misconduct. This is useful because a plausible number or copied query can hide an invalid comparison or unsupported business conclusion. The step rehearses the reasoning students must communicate when defending their analysis, while clearly distinguishing self-assessment from a grade. Its value is a design rationale; improvement relative to the instructor's live site has not yet been verified through comparative testing.
+The SQL checker executes the student's query against the actual supplied Chinook database and compares its complete result with a reference query executed against the same data. Unlike feedback based only on reading a query or trusting a student's reported numbers, it can detect incorrect counts, duplicated rows, missing groups and incorrect ordering. It accepts alternative queries with matching output and gives a concrete correction prompt when results differ. In a direct test of the lecturer's Q312 AI help, the tutor explicitly stated that it could not execute SQL or verify numerical output. Our checker addresses that observed limitation. It checks results rather than proving the student's method is valid for every possible dataset, so students still explain their reasoning in “Defend your result”.
+
+## SQL checker implementation and limits
+
+The site bundles sql.js 1.15.1 (MIT) and its WebAssembly runtime; attribution is in `site/vendor/`. The browser downloads the original Chinook database from this repository and opens a fresh in-memory copy for each check. Student queries are not sent to an AI or a query server. A dedicated worker runs one SELECT or WITH query with SQLite query-only mode enabled. Multiple statements and writes are rejected, results are capped at 2,000 rows / roughly 1 MB, and the worker is terminated after 15 seconds including loading time. Errors preserve the student's draft.
+
+Comparison ignores column aliases but respects column positions, value types, duplicate rows and NULLs. Numeric values tolerate an absolute difference of 0.000001. Row order is checked for questions sql-6 and sql-7, which explicitly request ordering; other questions use unordered row comparison. Matching output is evidence of correctness on this dataset, not proof of a generally correct method. Written explanations are not automatically graded. During active mock exams, the checker runs the student's query without reference evaluation; after finishing, students can run it again for feedback. This is a practice aid, not a secure exam platform.
 
 ## Assignment explanation: difficulty of the starting materials
 
