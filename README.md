@@ -8,7 +8,7 @@ A course-grounded practice site with 15 exercises, two five-task mock exams, dra
 2. Run `python server.py`.
 3. Open http://127.0.0.1:8000 in your browser.
 
-The local SQL runner uses the supplied Chinook database in read-only mode, rejects database changes and attachments, limits results and interrupts long queries. This is a local teaching server bound to your computer, not a production public backend.
+The website directs students to download Chinook and run SQL in their own SQLite tool. The optional local SQL API uses the supplied Chinook database in read-only mode, rejects database changes and attachments, limits results and interrupts long queries. This is a local teaching server bound to your computer, not a production public backend.
 
 ## Upload to GitHub Pages (static version)
 
@@ -16,7 +16,7 @@ Run `python tools/build_static.py`. The `dist` folder and `ExamStudio-upload.zip
 
 Create a GitHub repository, upload the **contents** of `dist` to its root, then enable GitHub Pages from the main branch, root folder in repository Settings → Pages. The eventual address depends on your GitHub account and repository name. The ZIP can also be extracted and uploaded to static hosting.
 
-Static hosting supports practice, mock exams, saving, exports and downloads. The optional SQL runner requires `server.py`; on static hosting students download Chinook and use their own SQL tool. No Gemini key belongs in browser code or a GitHub repository.
+Static hosting supports practice, mock exams, saving, exports and downloads. Students download Chinook and use their own SQL tool. The optional SQL API in `server.py` is not exposed as a website button. No Gemini key belongs in browser code or a GitHub repository.
 
 ## Content and limitations
 
