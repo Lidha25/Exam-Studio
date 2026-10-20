@@ -1,0 +1,429 @@
+[
+  {
+    "id": "sql-1",
+    "topic": "SQL",
+    "title": "Start with the population",
+    "prompt": "How many rows are in the Invoice table? Write a SQL query and report the count.",
+    "hint": "COUNT(*) counts rows, including rows containing NULL values.",
+    "answer": "Reference SQLite query:\nSELECT COUNT(*) AS invoices FROM Invoice",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        412
+      ]
+    ],
+    "sql": "SELECT COUNT(*) AS invoices FROM Invoice"
+  },
+  {
+    "id": "sql-2",
+    "topic": "SQL",
+    "title": "Find high-value invoices",
+    "prompt": "How many invoices have totals strictly greater than $20?",
+    "hint": "Use WHERE before aggregation. An invoice equal to $20 does not qualify.",
+    "answer": "Reference SQLite query:\nSELECT COUNT(*) FROM Invoice WHERE Total > 20",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        4
+      ]
+    ],
+    "sql": "SELECT COUNT(*) FROM Invoice WHERE Total > 20"
+  },
+  {
+    "id": "sql-3",
+    "topic": "SQL",
+    "title": "Define the interval",
+    "prompt": "How many invoices have totals greater than $10 and less than $20?",
+    "hint": "BETWEEN includes its endpoints; the question asks for strict inequalities.",
+    "answer": "Reference SQLite query:\nSELECT COUNT(*) FROM Invoice WHERE Total > 10 AND Total < 20",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        60
+      ]
+    ],
+    "sql": "SELECT COUNT(*) FROM Invoice WHERE Total > 10 AND Total < 20"
+  },
+  {
+    "id": "sql-4",
+    "topic": "SQL",
+    "title": "Filter three markets",
+    "prompt": "How many invoices have a billing country of Brazil, Argentina, or Chile?",
+    "hint": "IN is useful for membership in a list.",
+    "answer": "Reference SQLite query:\nSELECT COUNT(*) FROM Invoice WHERE BillingCountry IN ('Brazil','Argentina','Chile')",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        49
+      ]
+    ],
+    "sql": "SELECT COUNT(*) FROM Invoice WHERE BillingCountry IN ('Brazil','Argentina','Chile')"
+  },
+  {
+    "id": "sql-5",
+    "topic": "SQL",
+    "title": "Recognise missing information",
+    "prompt": "How many customers list their company?",
+    "hint": "A missing company is not the same as a company name. Check NULL and empty text.",
+    "answer": "Reference SQLite query:\nSELECT COUNT(*) FROM Customer WHERE Company IS NOT NULL AND TRIM(Company) <> ''",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        10
+      ]
+    ],
+    "sql": "SELECT COUNT(*) FROM Customer WHERE Company IS NOT NULL AND TRIM(Company) <> ''"
+  },
+  {
+    "id": "sql-6",
+    "topic": "SQL",
+    "title": "Communicate the country totals",
+    "prompt": "Return each billing country and total invoice value, highest total first.",
+    "hint": "Group by BillingCountry. Sum invoice totals directly so invoice-line joins do not duplicate revenue.",
+    "answer": "Reference SQLite query:\nSELECT BillingCountry, SUM(Total) AS revenue FROM Invoice GROUP BY BillingCountry ORDER BY revenue DESC, BillingCountry",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        "USA",
+        523.06
+      ],
+      [
+        "Canada",
+        303.96
+      ],
+      [
+        "France",
+        195.1
+      ],
+      [
+        "Brazil",
+        190.1
+      ],
+      [
+        "Germany",
+        156.48
+      ],
+      [
+        "United Kingdom",
+        112.86
+      ],
+      [
+        "Czech Republic",
+        90.24
+      ],
+      [
+        "Portugal",
+        77.24
+      ],
+      [
+        "India",
+        75.26
+      ],
+      [
+        "Chile",
+        46.62
+      ],
+      [
+        "Hungary",
+        45.62
+      ],
+      [
+        "Ireland",
+        45.62
+      ],
+      [
+        "Austria",
+        42.62
+      ],
+      [
+        "Finland",
+        41.62
+      ],
+      [
+        "Netherlands",
+        40.62
+      ],
+      [
+        "Norway",
+        39.62
+      ],
+      [
+        "Sweden",
+        38.62
+      ],
+      [
+        "Argentina",
+        37.62
+      ],
+      [
+        "Australia",
+        37.62
+      ],
+      [
+        "Belgium",
+        37.62
+      ],
+      [
+        "Denmark",
+        37.62
+      ],
+      [
+        "Italy",
+        37.62
+      ],
+      [
+        "Poland",
+        37.62
+      ],
+      [
+        "Spain",
+        37.62
+      ]
+    ],
+    "sql": "SELECT BillingCountry, SUM(Total) AS revenue FROM Invoice GROUP BY BillingCountry ORDER BY revenue DESC, BillingCountry"
+  },
+  {
+    "id": "sql-7",
+    "topic": "SQL",
+    "title": "Join without losing meaning",
+    "prompt": "Return the five tracks with the most units sold, showing track name and units. Break ties by TrackId ascending.",
+    "hint": "Join InvoiceLine to Track on TrackId. Sum Quantity; use a deterministic tie break.",
+    "answer": "Reference SQLite query:\nSELECT t.Name, SUM(il.Quantity) AS units FROM InvoiceLine il JOIN Track t ON t.TrackId=il.TrackId GROUP BY t.TrackId, t.Name ORDER BY units DESC, t.TrackId ASC LIMIT 5",
+    "checks": [
+      "I used the requested population and filters.",
+      "I checked the unit of analysis and missing values.",
+      "I can explain the result and any ties."
+    ],
+    "source": "PWC SQL.docx \u00b7 Chinook assignment",
+    "files": [
+      "materials/2. SQL part 1/Assignments/pwc assignment/Chinook_Sqlite.sqlite",
+      "materials/2. SQL part 1/Assignments/pwc assignment/PWC SQL.docx"
+    ],
+    "expected": [
+      [
+        "Balls to the Wall",
+        2
+      ],
+      [
+        "Inject The Venom",
+        2
+      ],
+      [
+        "Snowballed",
+        2
+      ],
+      [
+        "Overdose",
+        2
+      ],
+      [
+        "Deuces Are Wild",
+        2
+      ]
+    ],
+    "sql": "SELECT t.Name, SUM(il.Quantity) AS units FROM InvoiceLine il JOIN Track t ON t.TrackId=il.TrackId GROUP BY t.TrackId, t.Name ORDER BY units DESC, t.TrackId ASC LIMIT 5"
+  },
+  {
+    "id": "etl-1",
+    "topic": "Excel & ETL",
+    "title": "Import with intention",
+    "prompt": "Inspect ETL Case 1. Import it into Excel, preserving the original data. Document the delimiter, column types, row count and missing values. Explain how you verified the import.",
+    "hint": "Open the source as text first. Compare imported row and column counts to the source.",
+    "answer": "Use comma-separated import for this file; explicitly inspect types, year, tickers and numeric fields. Keep raw data unchanged, record row counts, inspect blanks and validate totals before and after transformation.",
+    "checks": [
+      "I documented delimiter and data types.",
+      "I retained the original data and row counts.",
+      "I reconciled totals and logged issues."
+    ],
+    "source": "ETL case \u00b7 extraction and messy data",
+    "files": [
+      "materials/1. Excel part 2/ETL Assignment/Analytics_mindset_case_studies_ETL.docx",
+      "materials/1. Excel part 2/ETL Assignment/data/case 1/Analytics_mindset_case_studies_ETL_Case1.csv"
+    ]
+  },
+  {
+    "id": "etl-2",
+    "topic": "Excel & ETL",
+    "title": "Prevent a duplicated total",
+    "prompt": "Using the ETL case discussion of joins and aggregation, explain why joining invoice totals to invoice-line records and summing those totals can overstate sales. Describe a repeatable fix.",
+    "hint": "What happens to a single invoice total when an invoice has three lines?",
+    "answer": "A header total repeats for every matching line. Aggregate lines to invoice level before joining, or sum the header table separately. Reconcile row counts, distinct invoice identifiers and control totals. Do not use SUM(DISTINCT total): different invoices can share the same value.",
+    "checks": [
+      "I identified the grain of each table.",
+      "I explained the duplication mechanism.",
+      "I described a reconciliation and a repeatable fix."
+    ],
+    "source": "ETL case \u00b7 joining and aggregation",
+    "files": [
+      "materials/1. Excel part 2/ETL Assignment/Analytics_mindset_case_studies_ETL.docx"
+    ]
+  },
+  {
+    "id": "pay-1",
+    "topic": "Payroll",
+    "title": "Make two systems comparable",
+    "prompt": "Prepare the 2015 and 2016 IntegrateCo files for a first-six-month comparison. Identify the stable employee key, common hours and wages definitions, and how you will extract job codes.",
+    "hint": "Employee_ID in the new system is not the same identifier as Employee_Number. Keep job codes as three-character text.",
+    "answer": "Match Emp_No (2015) to Employee_Number (2016). Gross wages in 2015 = Reg_Pay + OT_Pay; compare with Gross_Wages. Total hours = regular + overtime in each year. Extract the three-digit job code after the year and optional department letter; validate against 001\u2013012. Aggregate both years to the same employee/job grain; 2016 has no pay dates.",
+    "checks": [
+      "I matched the stable employee number.",
+      "I aligned wage and hour definitions.",
+      "I validated job codes and aggregation level."
+    ],
+    "source": "IntegrateCo \u00b7 Parts 1\u20132",
+    "files": [
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_Excel.docx",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_2015payroll.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_2016payroll.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_jobcodes.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_locations.csv"
+    ]
+  },
+  {
+    "id": "pay-2",
+    "topic": "Payroll",
+    "title": "Explain the payroll change",
+    "prompt": "Build the IntegrateCo Part 3 job-code comparison: total hours, gross wages and gross wages per hour for each year. Include every valid job code and identify the three largest increases among codes present in both years.",
+    "hint": "Divide total wages by total hours; do not average individual hourly rates.",
+    "answer": "Use the job-code lookup as the complete list and join yearly aggregates onto it. Calculate weighted gross pay per hour as SUM(wages)/SUM(hours), guarding against zero denominators. For this practice task define change explicitly as 2016 minus 2015 (positive = increase). The source contains conflicting wording on subtraction; label your convention. Investigate employees behind the three largest eligible changes before recommending action.",
+    "checks": [
+      "I included all valid job codes.",
+      "I used a weighted hourly cost and handled zero hours.",
+      "I labelled the change direction and traced drivers."
+    ],
+    "source": "IntegrateCo \u00b7 Part 3",
+    "files": [
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_Excel.docx",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_2015payroll.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_2016payroll.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_jobcodes.csv",
+      "materials/1. Excel part 3/IntegrateCo Assignment/Analytics_mindset_case_studies_IntegrateCo_locations.csv"
+    ]
+  },
+  {
+    "id": "reg-1",
+    "topic": "Regression",
+    "title": "Forecast for Bob",
+    "prompt": "Merge the three restaurant sheets and build a regression to predict aggregated sales seven days after the last observed day. Explain the prediction, inputs and uncertainty to Bob.",
+    "hint": "First establish a common date grain. Check that joins do not multiply daily sales.",
+    "answer": "Aggregate product sales to a daily total, inspect the other sheets and join on validated dates. Specify a regression with predictors available for the forecast date. Calculate the date as maximum observed date plus seven days. Report the forecast and its uncertainty, assumptions and operational implication for ingredients and staffing. Do not promise an exact outcome.",
+    "checks": [
+      "I verified date matching and daily totals.",
+      "I used predictors available at forecast time.",
+      "I explained uncertainty and a business decision."
+    ],
+    "source": "Restaurant \u00b7 forecast task",
+    "files": [
+      "materials/1. Excel part 4/Regression Assignment/Restaurant/Instructions.docx",
+      "materials/1. Excel part 4/Regression Assignment/Restaurant/data.xlsm"
+    ]
+  },
+  {
+    "id": "reg-2",
+    "topic": "Regression",
+    "title": "Interpret an effect",
+    "prompt": "Using the restaurant case, investigate whether temperature and game days are associated with sales. Explain how the interaction of prior-year sales and a game day changes the interpretation.",
+    "hint": "An interaction changes the slope associated with another predictor.",
+    "answer": "Fit and document the relevant models. For an interaction model, Sales = b0 + b1\u00d7PriorYearSales + b2\u00d7GameDay + b3\u00d7PriorYearSales\u00d7GameDay. The prior-year slope is b1 on non-game days and b1+b3 on game days; game-day difference is b2+b3\u00d7PriorYearSales. Interpret estimates and uncertainty from your fitted output. An association alone does not establish causation.",
+    "checks": [
+      "I specified the predictors and interaction.",
+      "I interpreted coefficients conditionally.",
+      "I discussed statistical uncertainty and causality."
+    ],
+    "source": "Restaurant \u00b7 temperature, game day and interaction tasks",
+    "files": [
+      "materials/1. Excel part 4/Regression Assignment/Restaurant/Instructions.docx",
+      "materials/1. Excel part 4/Regression Assignment/Restaurant/data.xlsm"
+    ]
+  },
+  {
+    "id": "audit-1",
+    "topic": "Audit",
+    "title": "Turn a policy into a test",
+    "prompt": "Using the P-card case, design a test for purchases above the $5,000 single-transaction ceiling. Explain the population, threshold, SQL logic and evidence needed before concluding a violation.",
+    "hint": "The file contains multiple agencies. Identify OSU and inspect transaction dates before filtering the 2014 calendar year.",
+    "answer": "Inspect distinct agency names/numbers, identify OSU and parse the actual TransactionDate format. Filter OSU transactions in calendar 2014 and Amount > 5000. The Year field may reflect a fiscal period, so verify its meaning. Review exceptions, approvals, receipts and the individual cardholder limit. A flagged row requires investigation; it is not proof of fraud.",
+    "checks": [
+      "I scoped OSU and the correct dates.",
+      "I used a strict amount threshold.",
+      "I distinguished an exception from proven misconduct."
+    ],
+    "source": "P-card \u00b7 background, spending controls and Task 5",
+    "files": [
+      "materials/2. SQL part 2/Pcards Assignment/Analytics_mindset_case_studies_PCard.docx",
+      "materials/2. SQL part 2/Pcards Assignment/pcards.db"
+    ]
+  },
+  {
+    "id": "audit-2",
+    "topic": "Audit",
+    "title": "Investigate split purchases",
+    "prompt": "Design a test for possible split purchases around the $5,000 limit. Explain your grouping choices, possible false positives and next audit steps.",
+    "hint": "Related transactions may use different cardholders, vendors or dates. A single grouping cannot catch every case.",
+    "answer": "Start with same-cardholder, same-vendor, same-day purchases below or equal to $5,000 whose combined amount exceeds $5,000. Restrict the agency and period, separate refunds and inspect dates. Review invoices and purchase purpose to establish whether a known purchase was split to evade a limit. Discuss missed splits across days, vendors or cardholders and unrelated legitimate purchases flagged by the rule.",
+    "checks": [
+      "I specified the grouping and thresholds.",
+      "I considered refunds and alternative splitting patterns.",
+      "I requested corroborating evidence."
+    ],
+    "source": "P-card \u00b7 prohibited split purchases",
+    "files": [
+      "materials/2. SQL part 2/Pcards Assignment/Analytics_mindset_case_studies_PCard.docx",
+      "materials/2. SQL part 2/Pcards Assignment/pcards.db"
+    ]
+  }
+]
